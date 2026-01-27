@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { PrismaService } from 'src/prisma/prisma.service';
 
 export interface User {
     id: number;
@@ -7,4 +8,8 @@ export interface User {
 }
 
 @Injectable()
-export class UsersService {}
+export class UsersService {
+    constructor (private prisma: PrismaService) {}
+
+    findAll(){}
+}

@@ -1,0 +1,17 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: postgres:16
+    container_name: sistema-gerenciamento-postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: guerr
+      POSTGRES_PASSWORD: akg030505
+      POSTGRES_DB: sistema-gerenciamento_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
