@@ -19,7 +19,8 @@ export class AuthController {
         return this.authService.login(dto)
     }
 
-    @UseGuards(JwtAuthGuard)
+    // Essa requisição pega as informações do usuário logado
+    @UseGuards(JwtAuthGuard)    // Exige que o usuário esteja logado
     @Get('me')
     getMe(@Req() req) {
         return req.user;

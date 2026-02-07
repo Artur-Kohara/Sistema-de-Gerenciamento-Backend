@@ -4,6 +4,7 @@ import { RegisterDto } from './dto/register.dto';
 import * as bcrypt from 'bcrypt';
 import { LoginDto } from './dto/login.dto';
 import { JwtService } from '@nestjs/jwt';
+import { Role } from '@prisma/client';
 
 @Injectable()
 export class AuthService {
@@ -16,11 +17,12 @@ export class AuthService {
         // Faz o hashing da senha com custo computacional 10 (quanto maior ele for mais seguro será, porém mais lento)
         const hashedPassword = await bcrypt.hash(dto.password, 10);
 
-        const user = await this.prisma.user.create({
+        const user = await this.prisma.user.create({    // Somente cria usuários padrão (devs)
             data: {
                 name: dto.name,
                 email: dto.email,
                 password: hashedPassword,
+                role: Role.DEV,
             },
         });
 
@@ -51,6 +53,7 @@ export class AuthService {
             sub: user.id,
             email: user.email,
             name: user.name,
+            role: user.role,
         }
 
         // Assina o token com o JWT_SECRET
