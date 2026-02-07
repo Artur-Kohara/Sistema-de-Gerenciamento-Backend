@@ -3,7 +3,10 @@ import { UsersService } from './users.service';
 import { Role } from '@prisma/client';
 import { Roles } from 'src/auth/decorators/roles.decorator';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { RolesGuard } from 'src/auth/guards/roles.guard';
 
+@UseGuards(JwtAuthGuard, RolesGuard)    // Limita essaa ações a admins logados
+@Roles(Role.ADMIN)
 @Controller('users')
 export class UsersController {
     constructor (private readonly usersService: UsersService) {}
@@ -23,8 +26,6 @@ export class UsersController {
         return this.usersService.create(name, email, password, role);
     }
 
-    @UseGuards(JwtAuthGuard)    // Limita essa requisição a usuários logados
-    @Roles(Role.ADMIN)  // Limita essa requisição apenas a admins
     @Delete(':id')
     remove(@Param('id') id: string) {
         return this.usersService.delete(Number(id));
