@@ -38,4 +38,10 @@ export class ProjectsService {
             },
         });
     }
+
+    delete(projectId: number) {
+        return this.prisma.project.delete({
+            where: {id: projectId},
+        });
+    }
 }
