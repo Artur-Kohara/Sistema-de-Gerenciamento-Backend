@@ -25,6 +25,17 @@ export class ProjectsService {
                     connect: {id: userId},
                 },
             },
-        })
+        });
+    }
+
+    removeUser(projectId: number, userId: number) {
+        return this.prisma.project.update({
+            where: {id: projectId},
+            data: {
+                users: {
+                    disconnect: {id: userId},
+                },
+            },
+        });
     }
 }

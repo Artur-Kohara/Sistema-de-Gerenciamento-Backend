@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, UseGuards, Patch } from '@nestjs/common';
 import { ProjectsService } from './projects.service';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
@@ -12,7 +12,7 @@ export class ProjectsController {
 
     @Roles(Role.ADMIN, Role.MANAGER)
     @Post()
-    create(@Body('name') name: string) {
+    create(@Body() name: string) {
         return this.projectsService.create(name);
     }
 
@@ -26,5 +26,11 @@ export class ProjectsController {
     @Post(':projectId/users/:userId')
     addUser(@Param('projectId') projectId: string, @Param('userId') userId: string) {
         return this.projectsService.addUser(Number(projectId), Number(userId));
+    }
+
+    @Roles(Role.ADMIN, Role.MANAGER)
+    @Patch(':projectId/users/:userId')
+    removeUser(@Param('projectId') projectId: string, @Param('userId') userId: string) {
+        return this.projectsService.removeUser(Number(projectId), Number(userId));
     }
 }
