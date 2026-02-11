@@ -1,13 +1,20 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { CreateProjectDto } from './dto/create-project.dto';
 
 @Injectable()
 export class ProjectsService {
     constructor (private prisma: PrismaService) {}
 
-    create(name: string) {
+    async create(dto: CreateProjectDto, userId:number) {
         return this.prisma.project.create({
-            data: {name},
+            data: {
+                name: dto.name,
+                users: {
+                    connect: {id: userId},
+                },
+            },
+            include: {users: true},
         });
     }
 
