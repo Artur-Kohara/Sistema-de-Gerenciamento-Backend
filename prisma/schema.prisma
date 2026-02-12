@@ -19,6 +19,12 @@ enum Role {
   DEV
 }
 
+enum TaskStatus {
+  TODO
+  DOING
+  DONE
+}
+
 model User {
   id       Int       @id @default(autoincrement())
   name     String    @unique
@@ -26,11 +32,25 @@ model User {
   password String
   role     Role      @default(DEV)
   projects Project[]
+  tasks    Task[]
 }
 
 model Project {
   id        Int      @id @default(autoincrement())
   name      String
-  createsAt DateTime @default(now())
+  createdAt DateTime @default(now())
   users     User[]
+  tasks     Task[]
+}
+
+model Task {
+  id     Int        @id @default(autoincrement())
+  title  String
+  status TaskStatus @default(TODO)
+
+  projectId Int
+  project   Project @relation(fields: [projectId], references: [id]) // Especifica que a chave projectId se refere ao id de um projeto
+
+  userId Int?
+  user   User? @relation(fields: [userId], references: [id])
 }
