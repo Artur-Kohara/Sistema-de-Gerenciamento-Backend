@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Param, Patch, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseGuards } from '@nestjs/common';
 import { TasksService } from './tasks.service';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { RolesGuard } from 'src/auth/guards/roles.guard';
@@ -26,5 +26,10 @@ export class TasksController {
     @Delete(':taskId')
     delete(@Param('taskId') taskId: string) {
         return this.tasksService.delete(Number(taskId));
+    }
+
+    @Get(':projectId')
+    find(@Param('projectId') projectId: string, @Query('status') status?: TaskStatus) {
+        return this.tasksService.find(Number(projectId), status);
     }
 }

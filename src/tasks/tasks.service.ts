@@ -29,4 +29,15 @@ export class TasksService {
             where: {id: taskId},
         });
     }
+
+    find(projectId: number, status?: TaskStatus) {
+        // Cria um filtro no qual adiciona o status caso ele exista juntamente ao id do projeto
+        // Caso contrário, apenas o id do projeto é usado
+        const whereClause: any = {projectId: projectId}
+        if (status) {whereClause.status = status;}
+
+        return this.prisma.task.findMany({
+            where: whereClause,
+        });
+    }
 }
